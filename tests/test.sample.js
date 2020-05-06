@@ -28,7 +28,7 @@ var configuration = {
   m2mCSecret: process.env.clientSecret,
   domain: process.env.Auth0Domain
 };
-describe('auth0-requestbin', function() {
+xdescribe('auth0-requestbin', function() {
   this.timeout(3 * 1000);
   var body = {
     'user': {
@@ -46,7 +46,8 @@ describe('auth0-requestbin', function() {
   it('should set global object successfully', async function() {
     var scope = nock(configuration.requestBinUrl).post('', body).reply(200),
       slowScope = nock('http://slowly.com').post('/delay/1second').delay(1000).reply(204);
-    await runInLocalSandbox([script1, script2], user, context, configuration);
+    const result = await runInLocalSandbox([script1, script2], user, context, configuration);
+    console.log(JSON.stringify(result));
     expect(slowScope.isDone()).to.be.true;
     expect(scope.isDone()).to.be.true;
   });
